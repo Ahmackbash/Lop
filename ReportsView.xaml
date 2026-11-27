@@ -1,0 +1,136 @@
+<UserControl x:Class="Library.App.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource CardBorderStyle}">
+            <StackPanel>
+                <TextBlock Text="Отчёты" Style="{StaticResource SectionTitleStyle}" />
+                <WrapPanel>
+                    <StackPanel Margin="0,0,12,0">
+                        <TextBlock Text="Период с" Style="{StaticResource FieldLabelStyle}" />
+                        <DatePicker Width="140" SelectedDate="{Binding PeriodFrom, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="по" Style="{StaticResource FieldLabelStyle}" />
+                        <DatePicker Width="140" SelectedDate="{Binding PeriodTo, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="Имена полей JSON" Style="{StaticResource FieldLabelStyle}" />
+                        <ComboBox Width="150" Height="26"
+                                  ItemsSource="{Binding NamingStyles, Mode=OneWay}"
+                                  SelectedItem="{Binding NamingStyle, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,18,16,0">
+                        <CheckBox Content="WriteIndented (отступы)" IsChecked="{Binding WriteIndented, Mode=TwoWay}" />
+                        <CheckBox Content="Сводка" IsChecked="{Binding IncludeSummary, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,18,16,0">
+                        <CheckBox Content="Топ-10 книг" IsChecked="{Binding IncludeTopBooks, Mode=TwoWay}" />
+                        <CheckBox Content="Читатели с просрочками" IsChecked="{Binding IncludeOverdueReaders, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,18,16,0">
+                        <CheckBox Content="Выдачи по жанрам" IsChecked="{Binding IncludeGenreDistribution, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                        <Button Content="Обновить отчёт" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding RefreshReportCommand}" />
+                        <Button Content="Выгрузить в JSON" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ExportReportCommand}" />
+                    </StackPanel>
+                </WrapPanel>
+                <TextBlock Text="{Binding ReportInfo, Mode=OneWay}" Foreground="#5A6675" Margin="0,6,0,0" />
+            </StackPanel>
+        </Border>
+
+        <TabControl Grid.Row="1" Margin="0,8,0,0">
+            <TabItem Header="Сводка">
+                <UniformGrid Columns="3" Rows="3" Margin="12">
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Книг в каталоге" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.BookCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Экземпляров" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.CopyCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Читателей" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.ReaderCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Выдач за период" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.LoanCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Активных выдач" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.ActiveLoanCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Выдач с просрочкой" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.OverdueLoanCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Сумма штрафов, ед." Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.TotalFine, Mode=OneWay, StringFormat=0.##, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Средний срок чтения, дн." Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.AverageReadingDays, Mode=OneWay, StringFormat=0.##, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                    <StackPanel Margin="8">
+                        <TextBlock Text="Возвращённых книг" Style="{StaticResource FieldLabelStyle}" />
+                        <TextBlock Style="{StaticResource SummaryValueStyle}"
+                                   Text="{Binding Summary.ReturnedLoanCount, Mode=OneWay, FallbackValue=—, TargetNullValue=—}" />
+                    </StackPanel>
+                </UniformGrid>
+            </TabItem>
+
+            <TabItem Header="Топ-10 книг">
+                <DataGrid Style="{StaticResource ReadOnlyGridStyle}" ItemsSource="{Binding TopBooks, Mode=OneWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Width="2*" Binding="{Binding Title, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Автор" Width="*" Binding="{Binding Author, Mode=OneWay}" />
+                        <DataGridTextColumn Header="ISBN" Width="140" Binding="{Binding Isbn, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Жанр" Width="160" Binding="{Binding Genre, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Выдач" Width="90" Binding="{Binding LoanCount, Mode=OneWay}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Читатели с просрочками">
+                <DataGrid Style="{StaticResource ReadOnlyGridStyle}" ItemsSource="{Binding OverdueReaders, Mode=OneWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№ билета" Width="110" Binding="{Binding TicketNumber, Mode=OneWay}" />
+                        <DataGridTextColumn Header="ФИО" Width="2*" Binding="{Binding FullName, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Телефон" Width="*" Binding="{Binding Phone, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Просроченных выдач" Width="150" Binding="{Binding OverdueLoanCount, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Дней всего" Width="110" Binding="{Binding TotalOverdueDays, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Максимум дней" Width="120" Binding="{Binding MaxOverdueDays, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Штраф, ед." Width="110" Binding="{Binding TotalFine, Mode=OneWay, StringFormat=0.##}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="Выдачи по жанрам">
+                <DataGrid Style="{StaticResource ReadOnlyGridStyle}" ItemsSource="{Binding GenreDistribution, Mode=OneWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Жанр" Width="*" Binding="{Binding Genre, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Выдач" Width="120" Binding="{Binding LoanCount, Mode=OneWay}" />
+                        <DataGridTextColumn Header="Доля, %" Width="120" Binding="{Binding SharePercent, Mode=OneWay, StringFormat=0.##}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

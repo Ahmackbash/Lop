@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Library.App</RootNamespace>
+    <AssemblyName>Library.App</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Исходные данные репозитория копируются в каталог вывода: data рядом с exe -->
+  <ItemGroup>
+    <Content Include="..\data\books.csv" Link="data\books.csv" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\data\readers.json" Link="data\readers.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\data\loans.json" Link="data\loans.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

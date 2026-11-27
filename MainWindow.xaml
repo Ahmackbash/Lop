@@ -1,0 +1,45 @@
+<Window x:Class="Library.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Библиотека: каталог, выдачи и отчёты"
+        Height="780" Width="1240" MinHeight="620" MinWidth="1040"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel Background="White">
+
+        <Border DockPanel.Dock="Top" Background="{StaticResource PanelBrush}" Padding="10,8"
+                BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Библиотека" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,16,0" />
+                <Button Content="Загрузить данные" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding LoadCommand}" />
+                <Button Content="Сохранить" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding SaveCommand}" />
+                <Button Content="Отменить операцию" Style="{StaticResource ToolbarButtonStyle}" Command="{Binding CancelCommand}" />
+                <ProgressBar Width="140" Height="10" IsIndeterminate="True" VerticalAlignment="Center"
+                             Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+                <TextBlock Text="Есть несохранённые изменения" Margin="12,0,0,0" VerticalAlignment="Center"
+                           Foreground="{StaticResource ErrorBrush}"
+                           Visibility="{Binding HasPendingChanges, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0">
+            <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" Margin="10,5" />
+        </Border>
+
+        <Border DockPanel.Dock="Left" Width="215" Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,1,0">
+            <ItemsControl ItemsSource="{Binding Sections, Mode=OneWay}" Margin="0,8">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource NavButtonStyle}"
+                                Content="{Binding Title, Mode=OneWay}"
+                                Command="{Binding SelectCommand}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <ContentControl Content="{Binding CurrentViewModel, Mode=OneWay}" Margin="10"
+                        IsEnabled="{Binding IsBusy, Mode=OneWay, Converter={StaticResource InverseBoolean}}" />
+    </DockPanel>
+</Window>
